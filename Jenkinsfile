@@ -1,5 +1,8 @@
 pipeline {
 agent any
+tools{
+    maven "maven"
+}
 
 
 stages{
@@ -11,6 +14,16 @@ stages{
     stage("Unit Test"){
         steps{
                sh 'mvn test'
+        }
+    }
+     stage("Integration Test maven"){
+        steps{
+               sh 'mvn verify -DskipUnitTests'
+        }
+    }
+     stage("Package"){
+        steps{
+                 sh 'mvn package'
         }
     }
 }
