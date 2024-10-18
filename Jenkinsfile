@@ -3,8 +3,11 @@ agent any
 tools{
     maven "maven"
 }
-
-
+environment {
+        APP_NAME = 'loginregisterapp'
+        MAJOR_VERSION = "1.0"
+        BUILD_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
+}
 stages{
     stage("Clean"){
         steps{
@@ -33,7 +36,7 @@ stages{
     }
     stage("Artifactory"){
         steps{
-            sh "aws s3 cp /var/lib/jenkins/workspace/capstone-project/target/*.war s3://b100-capstone-project-login-app-artifactory/"
+            sh "aws s3 cp $WORKSPACE/target/*.war s3://b100-capstone-project-login-app-artifactory/${APP_NAME}-${BUILD_VERSION}.war "
         }
     }
 }

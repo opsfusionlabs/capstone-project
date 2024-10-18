@@ -31,6 +31,6 @@
   </dependencies>
   
   <build>
-    <finalName>LoginRegisterApp-1.2</finalName>
+    <finalName>LoginRegisterApp</finalName>
   </build>
 </project>
