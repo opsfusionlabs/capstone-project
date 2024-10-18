@@ -48,6 +48,19 @@ stages{
 
         }
     }
+    stage ('Registery Login') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                    sh ' docker login -u $USERNAME -p $PASSWORD '
+                }
+            }  
+    }
+    stage ('Push Docker Image') {
+            steps {
+                sh " docker push ${NEW_BUILD_DOCKER_IMAGE} "
+            }  
+    }
+
 }
 
 }
