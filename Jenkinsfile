@@ -6,7 +6,9 @@ tools{
 environment {
         APP_NAME = 'loginregisterapp'
         MAJOR_VERSION = "1.0"
+        DOCKER_USER = "vedantdevops"
         BUILD_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
+        NEW_BUILD_DOCKER_IMAGE = "${DOCKER_USER}" + "/" + "${APP_NAME}:${BUILD_VERSION}" 
 }
 stages{
     stage("Clean"){
@@ -42,7 +44,7 @@ stages{
     stage("Build Docker Image"){
         steps{
             sh ''' cd $WORKSPACE ''' 
-            sh "docker build -t tomcat:1.0 . "
+            sh "docker build -t ${NEW_BUILD_DOCKER_IMAGE} . "
 
         }
     }
