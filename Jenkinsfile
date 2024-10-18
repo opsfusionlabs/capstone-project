@@ -39,6 +39,13 @@ stages{
             sh "aws s3 cp $WORKSPACE/target/*.war s3://b100-capstone-project-login-app-artifactory/${APP_NAME}-${BUILD_VERSION}.war "
         }
     }
+    stage("Build Docker Image"){
+        steps{
+            sh ''' cd $WORKSPACE ''' 
+            sh "docker build -t tomcat:1.0 . "
+
+        }
+    }
 }
 
 }
