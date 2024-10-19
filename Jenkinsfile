@@ -36,31 +36,20 @@ stages{
                  sh 'mvn package'
         }
     }
-    stage("Artifactory"){
-        steps{
-            sh "aws s3 cp $WORKSPACE/target/*.war s3://b100-capstone-project-login-app-artifactory/${APP_NAME}-${BUILD_VERSION}.war "
-        }
+   
+    stage('Static code analysis: Sonarqube'){
+         
+            steps{
+               script{
+                   
+                   def SonarQubecredentialsId = 'sonarqube-api'
+                   withSonarQubeEnv(credentialsId: credentialsId) {
+         sh 'mvn clean package sonar:sonar'
     }
-    stage("Build Docker Image"){
-        steps{
-            sh ''' cd $WORKSPACE ''' 
-            sh "docker build -t ${NEW_BUILD_DOCKER_IMAGE} . "
-
-        }
-    }
-    stage ('Registery Login') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                    sh ' docker login -u $USERNAME -p $PASSWORD '
-                }
-            }  
-    }
-    stage ('Push Docker Image') {
-            steps {
-                sh " docker push ${NEW_BUILD_DOCKER_IMAGE} "
-            }  
-    }
-
+               }
+            }
+       }
+    
 }
 
 }
