@@ -41,9 +41,7 @@ stages{
          
             steps{
                script{
-                   
-                   def SonarQubecredentialsId = 'sonarqube-api'
-                   withSonarQubeEnv(credentialsId: credentialsId) {
+                   withSonarQubeEnv(credentialsId: sonarqube-api) {
          sh 'mvn clean package sonar:sonar'
     }
                }
