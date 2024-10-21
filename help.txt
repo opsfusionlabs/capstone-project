@@ -1,0 +1,37 @@
+docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube
+
+
+https://aquasecurity.github.io/trivy/v0.18.3/installation/
+
+
+
+Sonar Dashboard -> Administration -> My
+Account -> Security -> Create token -> Save
+the token to some text file
+
+
+
+Sonar Dashboard -> Administration ->
+Configuration -> webhooks -> Add the below
+name and url and save
+
+
+Jenkins Dashboard -> Manage Jenkins ->
+configure system
+
+
+Click on sonarqube
+servers -> add url and name -> Click on
+add token -> Select Secret text -> Add
+the sonar token from step13.3 -> Give
+name of token as sonarqube-api
+
+
+    stage("image scan"){
+        steps{
+           sh """   
+                trivy image ${NEW_BUILD_DOCKER_IMAGE} > scan.txt
+                cat scan.txt
+            """
+        }
+    }

@@ -31,11 +31,23 @@ stages{
                sh 'mvn verify -DskipUnitTests'
         }
     }
-    stage("Package"){
+    stage('Static code analysis: Sonarqube'){
         steps{
-                 sh 'mvn package'
+            script{
+                withSonarQubeEnv('SonarQube') { 
+                sh 'mvn clean package sonar:sonar'
+                    }
+            }
         }
     }
+    stage("Quality Gate") {
+        steps {
+            timeout(time: 1, unit: 'HOURS') {
+            waitForQualityGate abortPipeline: true
+            }
+        }
+    }
+          
     stage("Artifactory"){
         steps{
             sh "aws s3 cp $WORKSPACE/target/*.war s3://b100-capstone-project-login-app-artifactory/${APP_NAME}-${BUILD_VERSION}.war "
