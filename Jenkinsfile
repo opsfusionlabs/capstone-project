@@ -60,6 +60,14 @@ stages{
 
         }
     }
+    stage("image scan"){
+        steps{
+           sh """   
+                trivy image ${NEW_BUILD_DOCKER_IMAGE} > scan.txt
+                cat scan.txt
+            """
+        }
+    }
     stage ('Registery Login') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
