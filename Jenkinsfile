@@ -63,7 +63,7 @@ stages{
     stage("image scan"){
         steps{
            sh """   
-                trivy image ${NEW_BUILD_DOCKER_IMAGE} > scan.txt
+                trivy image --scanners vuln ${NEW_BUILD_DOCKER_IMAGE} > scan.txt
                 cat scan.txt
             """
         }
