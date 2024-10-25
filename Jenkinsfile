@@ -81,8 +81,23 @@ stages{
             }  
     }
     stage("Update Mainfest Files"){
-        steps{
-            build job: 'k8-manifest-files', parameters: [string(name: 'docker_image_name', value: "${APP_NAME}"), string(name: 'release_version_tag_id', value: "${BUILD_VERSION}")]
+           steps{
+                script {
+                            echo "Assume the Deploy feature/alpha is Success"
+                        
+                            timeout(time: 5, unit: 'MINUTES') {
+                                env.userChoice = input message: "Do you want to Deploy ${NEW_BUILD_DOCKER_IMAGE} of Application ? ",
+                                    parameters: [choice(name: 'New Deploymnet Conformation', choices: 'no\nyes', description: 'Choose "yes" if you want to deploy this build')]
+                            }
+                            if (userChoice == 'yes') {
+                        
+                                build job: 'k8-manifest-files', parameters: [string(name: 'docker_image_name', value: "${APP_NAME}"), string(name: 'release_version_tag_id', value: "${BUILD_VERSION}")]
+                            }
+                            else if(userChoice == 'no') {
+                                echo "Process abort by: ${user}"
+                            }
+                                
+                        }
         }
     }
 
