@@ -85,7 +85,7 @@ stages{
                 script {
                             echo "Assume the Deploy feature/alpha is Success"
                         
-                            timeout(time: 5, unit: 'MINUTES') {
+                            timeout(time: 1, unit: 'MINUTES') {
                                 env.userChoice = input message: "Do you want to Deploy ${NEW_BUILD_DOCKER_IMAGE} of Application ? ",
                                     parameters: [choice(name: 'New Deploymnet Conformation', choices: 'no\nyes', description: 'Choose "yes" if you want to deploy this build')]
                             }
