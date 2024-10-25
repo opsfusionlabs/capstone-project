@@ -80,6 +80,11 @@ stages{
                 sh " docker push ${NEW_BUILD_DOCKER_IMAGE} "
             }  
     }
+    stage("Update Mainfest Files"){
+        steps{
+            build job: 'k8-manifest-files', parameters: [string(name: 'docker_image_name', value: "${APP_NAME}"), string(name: 'release_version_tag_id', value: "${BUILD_VERSION}")]
+        }
+    }
 
 }
 
